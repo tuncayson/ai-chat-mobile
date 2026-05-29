@@ -4,41 +4,25 @@ A cross-platform Flutter chat app (Android + iOS) where a signed-in user has mem
 
 ## Architecture
 
-```
-                ┌──────────────────────────┐
-                │   Flutter mobile app     │
-                │   (Riverpod · go_router  │
-                │    supabase_flutter)     │
-                └────────────┬─────────────┘
-                             │ HTTPS + Supabase JWT
-                             ▼
-        ┌────────────────────────────────────────┐
-        │                Supabase                │
-        │                                        │
-        │  ┌──────────┐  ┌────────────────────┐  │
-        │  │   Auth   │  │ Postgres + RLS     │  │
-        │  │ (email + │  │ conversations /    │  │
-        │  │ password)│  │ messages           │  │
-        │  └──────────┘  └─────────┬──────────┘  │
-        │                          │ CDC          │
-        │                          ▼              │
-        │              ┌───────────────────────┐  │
-        │              │  Edge Function `chat` │  │
-        │              │  (Deno + TypeScript)  │  │
-        │              └───────────┬───────────┘  │
-        └──────────────────────────┼──────────────┘
-                                   │
-                                   ▼
-                     ┌──────────────────────────┐
-                     │   Anthropic Claude       │
-                     │   Messages API           │
-                     │   (server-side API key)  │
-                     └──────────────────────────┘
-```
+![Architecture diagram](./assets/screenshots/architecture.svg)
 
 The Anthropic API key lives **only** inside the Edge Function's secrets — never in the mobile binary. The app ships only Supabase's publishable (anon) key; Row Level Security is what protects the data.
 
 See [`Architecture.md`](./Architecture.md) for the deeper technical contract: schema, policies, conventions, what NOT to do.
+
+## 📱 Screenshots
+
+<p align="center">
+  <img src="assets/screenshots/conversations.png" width="250">
+  <img src="assets/screenshots/chat.png" width="250">
+  <img src="assets/screenshots/settings.png" width="250">
+</p>
+
+<p align="center">
+  <img src="assets/screenshots/login.png" width="250">
+  <img src="assets/screenshots/signup.png" width="250">
+  <img src="assets/screenshots/new-chat.png" width="250">
+</p>
 
 ## Screens
 
